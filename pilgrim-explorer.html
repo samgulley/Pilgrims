@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pilgrim Origins Explorer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .county-list {
+            flex: 1;
+            max-width: 300px;
+            border-right: 1px solid #ccc;
+            padding-right: 20px;
+        }
+        .details-panel {
+            flex: 2;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .county-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            text-align: left;
+            border-radius: 4px;
+        }
+        .county-button:hover {
+            background: #e0e0e0;
+        }
+        .county-button.active {
+            background: #4a6741;
+            color: white;
+        }
+        .pilgrim-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4a6741;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #4a6741;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pilgrim Origins Explorer</h1>
+    <div class="container">
+        <div class="county-list" id="countyList">
+            <!-- Counties will be populated here -->
+        </div>
+        <div class="details-panel" id="detailsPanel">
+            <h2>Select a county to view Pilgrims</h2>
+            <p>Click on an English county to see information about Pilgrims who came from that region.</p>
+        </div>
+    </div>
+
+    <script>
+        // Sample data structure
+        const pilgrimData = {
+            "Yorkshire": [
+                {
+                    name: "William Bradford",
+                    origin: "Austerfield, Yorkshire",
+                    birth: "March 1590",
+                    death: "May 9, 1657",
+                    details: "William Bradford was a leading figure of the Plymouth Colony. He served as governor for about 30 years and wrote extensively about the colony's early years in 'Of Plymouth Plantation.'",
+                    role: "Governor of Plymouth Colony"
+                },
+                {
+                    name: "William Brewster",
+                    origin: "Scrooby, Yorkshire",
+                    birth: "1566",
+                    death: "April 10, 1644",
+                    details: "Elder William Brewster was a senior leader and preacher of the Pilgrims. He helped establish the Plymouth Colony and served as senior elder and advisor.",
+                    role: "Elder and Religious Leader"
+                }
+            ],
+            "Somerset": [
+                {
+                    name: "John Howland",
+                    origin: "Frome, Somerset",
+                    birth: "1592",
+                    death: "February 23, 1673",
+                    details: "John Howland came as a servant to Governor John Carver but rose to prominence in Plymouth Colony. He survived falling overboard during the Mayflower voyage.",
+                    role: "Colony Executive Assistant"
+                }
+            ],
+            "Essex": [
+                {
+                    name: "Francis Cooke",
+                    origin: "Brantham, Essex",
+                    birth: "1583",
+                    death: "April 7, 1663",
+                    details: "Francis Cooke was one of the older Mayflower passengers and signed the Mayflower Compact. He worked as a woolcomber before joining the Pilgrims.",
+                    role: "Colony Settler"
+                }
+            ],
+            "Norfolk": [
+                {
+                    name: "Samuel Fuller",
+                    origin: "Redenhall, Norfolk",
+                    birth: "1580",
+                    death: "1633",
+                    details: "Samuel Fuller served as the doctor and surgeon of Plymouth Colony. He was also a church deacon and played an important role in caring for the settlers.",
+                    role: "Colony Physician"
+                }
+            ]
+        };
+
+        // Function to populate the county list
+        function populateCountyList() {
+            const countyList = document.getElementById('countyList');
+            Object.keys(pilgrimData).forEach(county => {
+                const button = document.createElement('button');
+                button.className = 'county-button';
+                button.textContent = county;
+                button.onclick = () => showPilgrims(county);
+                countyList.appendChild(button);
+            });
+        }
+
+        // Function to display pilgrim information
+        function showPilgrims(county) {
+            // Update active button
+            document.querySelectorAll('.county-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === county) {
+                    btn.classList.add('active');
+                }
+            });
+
+            const detailsPanel = document.getElementById('detailsPanel');
+            const pilgrims = pilgrimData[county];
+            
+            let html = `<h2>Pilgrims from ${county}</h2>`;
+            
+            pilgrims.forEach(pilgrim => {
+                html += `
+                    <div class="pilgrim-card">
+                        <h3>${pilgrim.name}</h3>
+                        <p><strong>Origin:</strong> ${pilgrim.origin}</p>
+                        <p><strong>Birth:</strong> ${pilgrim.birth}</p>
+                        <p><strong>Death:</strong> ${pilgrim.death}</p>
+                        <p><strong>Role:</strong> ${pilgrim.role}</p>
+                        <p>${pilgrim.details}</p>
+                    </div>
+                `;
+            });
+
+            detailsPanel.innerHTML = html;
+        }
+
+        // Initialize the application
+        populateCountyList();
+    </script>
+</body>
+</html>
